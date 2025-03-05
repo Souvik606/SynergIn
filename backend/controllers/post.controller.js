@@ -3,8 +3,9 @@ import Post from "../models/post.model.js";
 import {ApiResponse} from "../utils/ApiResponse.js";
 import {deleteFromCloudinary, uploadOnCloudinary} from "../lib/cloudinary.js";
 import {ApiError} from "../utils/ApiError.js";
+import Notification from "../models/notifications.model.js";
 
-export const getPosts=asyncHandler(async (req, res) => {
+export const getFeedPosts=asyncHandler(async (req, res) => {
   const posts=await Post.find({
     author:{
       $in:req.user.connections
@@ -22,7 +23,7 @@ export const createPosts=asyncHandler(async (req, res) => {
   const {content}=req.body;
   let newPost;
 
-  const postImageLocalPath=req.files?.postImage[0]?.path;
+  const postImageLocalPath=req.files?.image[0]?.path;
 
   if(!postImageLocalPath){
     newPost=new Post({
@@ -68,9 +69,86 @@ export const deletePost=asyncHandler(async (req, res) => {
     await deleteFromCloudinary(post.image);
   }
 
-  const deletedPost=await post.findByIdAndDelete(postId);
+  const deletedPost=await Post.findByIdAndDelete(postId);
 
   return res.status(200).json(
     new ApiResponse(200, deletedPost,"Post deleted successfully")
+  )
+})
+
+export const getPostById=asyncHandler(async (req, res) => {
+  const postId=req.params.id;
+  const post=await Post.findById(postId)
+    .populate("author","name username profilePicture headline")
+    .populate("comments.user","name profilePicture username headline")
+
+  if(!post){
+    throw new ApiError(404,"Post not found");
+  }
+
+  return res.status(200).json(
+    new ApiResponse(200, post,"Post fetched successfully")
+  )
+})
+
+export const createComment=asyncHandler(async (req, res) => {
+  const postId=req.params.id;
+  const {content}=req.body;
+
+  const post=await Post.findByIdAndUpdate(postId,{
+    $push:{comments:{user:req.user._id,content:content}}},{new:true}
+  )
+
+  if(!post){
+    throw new ApiError(404,"Post not found");
+  }
+
+  if(post.author.toString()!==req.user._id.toString()){
+    const newNotification=new Notification({
+      recipient:post.author,
+      type:"comment",
+      relatedUser:req.user._id,
+      relatedPost:postId,
+    })
+
+    await newNotification.save();
+  }
+
+  return res.status(200).json(
+    new ApiResponse(200, post,"Comment created successfully")
+  )
+  }
+)
+
+export const likePost=asyncHandler(async (req, res) => {
+  const postId=req.params.id;
+  const post=await Post.findById(postId);
+
+  if(!post){
+    throw new ApiError(404,"Post not found");
+  }
+
+  if(post.likes.includes(req.user._id)){
+    post.likes=post.likes.filter((id)=>id.toString()!==req.user._id.toString());
+  }
+  else{
+    post.likes.push(req.user._id)
+
+    if(post.author.toString()!==req.user._id.toString()){
+      const newNotification=new Notification({
+        recipient:post.author,
+        type:"like",
+        relatedUser:req.user._id,
+        relatedPost:postId,
+      })
+
+      await newNotification.save();
+    }
+  }
+
+  await post.save()
+
+  return res.status(200).json(
+    new ApiResponse(200, post,"Liked successfully")
   )
 })
