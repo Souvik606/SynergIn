@@ -1,6 +1,7 @@
 import {asyncHandler} from "../utils/asyncHandler.js";
 import {User} from "../models/user.model.js";
 import {ApiResponse} from "../utils/ApiResponse.js";
+import {uploadOnCloudinary} from "../lib/cloudinary.js";
 
 export const getSuggestedConnections=asyncHandler(async (req, res) => {
   const connections=await User.findById(req?.user._id).select("connections")
@@ -38,8 +39,6 @@ export const updateProfile=asyncHandler(async (req, res) => {
     "headline",
     "about",
     "location",
-    "profilePicture",
-    "bannerImg",
     "skills",
     "experience",
     "education",
@@ -52,4 +51,30 @@ export const updateProfile=asyncHandler(async (req, res) => {
       updatedData[field] = req.body[field];
     }
   }
+
+  const profilePictureLocalPath=req.files?.profilePicture[0]?.path;
+
+  if(profilePictureLocalPath){
+    const profilePicture=await uploadOnCloudinary(profilePictureLocalPath);
+    updatedData["profilePicture"]=profilePicture.secure_url;
+  }
+
+  const bannerImgLocalPath=req.files?.bannerImg[0]?.path;
+
+  if(bannerImgLocalPath){
+    const bannerImg=await uploadOnCloudinary(bannerImgLocalPath);
+    updatedData["bannerImg"]=bannerImg.secure_url;
+  }
+
+  const user = await User.findByIdAndUpdate(req.user._id, { $set: updatedData }, { new: true }).select(
+    "-password"
+  );
+
+  if(!user){
+    throw new ApiResponse(500, "Can't update user")
+  }
+
+  return res.status(200).json(
+    new ApiResponse(200, user,"Profile details updated")
+  );
 })
