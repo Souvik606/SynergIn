@@ -8,6 +8,7 @@ import {sendWelcomeEmail} from "../email/emailHandler.js";
 
 export const signup=asyncHandler(async (req, res) => {
     const {name, email, username, password} = req.body;
+    console.log(req.body);
 
     if (!(name && email && username && password)) {
       throw new ApiError(400, "All fields are required");
