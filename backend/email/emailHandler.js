@@ -1,11 +1,11 @@
 import { mailtrapClient, sender } from "../lib/mailtrap.js";
 import {createConnectionAcceptedEmailTemplate, createWelcomeEmailTemplate,} from "./emailTemplates.js";
 
-export const sendWelcomeEmail = async (email, name, profileUrl) => {
+export const sendWelcomeEmail = async(email, name, profileUrl) => {
   const recipient = [{email}];
 
   try {
-    const response = await mailtrapClient.send({
+    const response =await mailtrapClient.send({
       from: sender,
       to: recipient,
       subject: "Welcome to Synergein",
