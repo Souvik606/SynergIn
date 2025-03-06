@@ -23,7 +23,8 @@ export const createPosts=asyncHandler(async (req, res) => {
   const {content}=req.body;
   let newPost;
 
-  const postImageLocalPath=req.files?.image[0]?.path;
+  console.log(req.file)
+  const postImageLocalPath=req.file?.path;
 
   if(!postImageLocalPath){
     newPost=new Post({
@@ -40,10 +41,11 @@ export const createPosts=asyncHandler(async (req, res) => {
     })
   }
 
+  console.log(newPost);
   const post=await newPost.save();
 
   if(!post){
-    throw new ApiError(500,"Post can't be created.Interna Server error");
+    throw new ApiError(500,"Post can't be created.Internal Server error");
   }
 
   return res.status(200).json(

@@ -2,6 +2,7 @@ import {axiosInstance} from "../lib/axios.js";
 import {useQuery} from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import Sidebar from "../components/Sidebar";
+import PostCreation from "../components/PostCreation.jsx";
 
 const HomePage = () => {
   const { data: authUser } = useQuery({ queryKey: ["authUser"] });
@@ -30,7 +31,10 @@ const HomePage = () => {
     <div className='hidden lg:block lg:col-span-1'>
       <Sidebar user={authUser.data}/>
     </div>
-  </div>
-}
+    <div className='col-span-1 lg:col-span-2 order-first lg:order-none'>
+      <PostCreation user={authUser.data}/>
+    </div>
+    </div>
+    }
 
-export default HomePage;
+    export default HomePage;

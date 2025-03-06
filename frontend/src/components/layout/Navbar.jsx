@@ -75,7 +75,7 @@ const Navbar = () => {
                   <span className='text-base hidden md:block'>Me</span>
                 </Link>
                 <button
-                  className='hover:scale-105 hover:transform flex items-center space-x-1 text-sm text-gray-600 hover:text-gray-800'
+                  className='pl-16 hover:scale-105 hover:transform flex items-center space-x-1 text-sm text-gray-600 hover:text-gray-800'
                   onClick={() => logout()}
                 >
                   <LogOut size={28} />
