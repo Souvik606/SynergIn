@@ -24,13 +24,8 @@ const Navbar = () => {
     },
   });
 
-  console.log(notifications)
-
   const unreadNotificationCount = notifications?.data.data.filter((notif) => !notif.read).length;
   const unreadConnectionRequestsCount = connectionRequests?.data?.length;
-
-  console.log("notifications",notifications);
-  console.log("connectionRequests",connectionRequests);
 
   return (
     <nav className='bg-secondary shadow-md sticky top-0 z-10'>

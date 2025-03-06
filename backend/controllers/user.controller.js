@@ -52,6 +52,7 @@ export const updateProfile=asyncHandler(async (req, res) => {
     }
   }
 
+  console.log(req.files)
   const profilePictureLocalPath=req.files?.profilePicture[0]?.path;
 
   if(profilePictureLocalPath){

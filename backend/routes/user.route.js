@@ -5,7 +5,7 @@ import {upload} from "../middleware/multer.middleware.js";
 
 const router = Router();
 
-router.route("suggestions").get(protectRoute,getSuggestedConnections);
+router.route("/suggestions").get(protectRoute,getSuggestedConnections);
 router.route("/:username").get(protectRoute,getProfile);
 router.route("/update-profile").patch(protectRoute,
   upload.fields([
