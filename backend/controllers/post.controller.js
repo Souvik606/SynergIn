@@ -8,7 +8,7 @@ import Notification from "../models/notifications.model.js";
 export const getFeedPosts=asyncHandler(async (req, res) => {
   const posts=await Post.find({
     author:{
-      $in:req.user.connections
+      $in:[...req.user.connections,req.user._id]
     }
   }).populate("author","name username profilePicture headline")
     .populate("comments.user","name profilePicture")

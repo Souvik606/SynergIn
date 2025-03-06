@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useMutation} from "@tanstack/react-query";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {axiosInstance} from "../lib/axios.js";
 import toast from "react-hot-toast";
 import { Image, Loader } from "lucide-react";
@@ -8,6 +8,8 @@ const PostCreation = ({user}) => {
   const [content, setContent] = useState('');
   const [image, setImage] = useState('');
   const [imagePreview, setImagePreview] = useState('');
+
+  const queryClient=useQueryClient();
 
   const {mutate:createPostMutation,isPending}= useMutation({
     mutationFn:async(postData)=>{
@@ -19,6 +21,7 @@ const PostCreation = ({user}) => {
     onSuccess:()=>{
       resetForm();
       toast.success('Post created successfully.');
+      queryClient.invalidateQueries({queryKey:["posts"]});
     },
     onError:(error)=>{
       toast.error(error.response.data.message||"Failed to create post.");

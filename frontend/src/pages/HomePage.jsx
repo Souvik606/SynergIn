@@ -3,6 +3,8 @@ import {useQuery} from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import Sidebar from "../components/Sidebar";
 import PostCreation from "../components/PostCreation.jsx";
+import {Users} from "lucide-react"
+import Post from "../components/Post.jsx";
 
 const HomePage = () => {
   const { data: authUser } = useQuery({ queryKey: ["authUser"] });
@@ -33,6 +35,18 @@ const HomePage = () => {
     </div>
     <div className='col-span-1 lg:col-span-2 order-first lg:order-none'>
       <PostCreation user={authUser.data}/>
+      {posts?.data.map((post) => (
+        <Post key={post._id} post={post} />
+      ))}
+      {posts?.data.length === 0 && (
+        <div className='bg-white rounded-lg shadow p-8 text-center'>
+          <div className='mb-6'>
+            <Users size={64} className='mx-auto text-blue-500' />
+          </div>
+          <h2 className='text-2xl font-bold mb-4 text-gray-800'>No Posts Yet</h2>
+          <p className='text-gray-600 mb-6'>Connect with others to start seeing posts in your feed!</p>
+        </div>
+      )}
     </div>
     </div>
     }
