@@ -3,7 +3,7 @@ import SignUpForm from "../../components/auth/SignUpForm";
 
 const SignUpPage = () => {
   return (
-    <div className='min-h-[90vh] rounded-3xl flex flex-col justify-center sm:px-6 lg:px-8'>
+    <div className='min-h-[85vh] rounded-3xl flex flex-col justify-center sm:px-6 lg:px-8'>
       <div className='sm:mx-auto sm:w-full sm:max-w-md '>
         <img className='mx-auto h-20 w-auto' src='/logo.svg' alt='SynergIn' />
         <h2 className='text-center text-3xl font-bold text-gray-900 pt-4'>
