@@ -4,6 +4,7 @@ import {User} from "../models/user.model.js";
 import {asyncHandler} from "../utils/asyncHandler.js";
 import {ApiError} from "../utils/ApiError.js";
 import {ApiResponse} from "../utils/ApiResponse.js";
+import {sendConnectionAcceptedEmail} from "../email/emailHandler.js";
 
 export const sendConnectionRequest = asyncHandler(async (req, res) => {
     const { userId } = req.params.requestId;
@@ -82,6 +83,11 @@ export const acceptConnectionRequest = asyncHandler(async (req, res) => {
     const recipientName = request.recipient.name;
     const profileUrl = process.env.CLIENT_URL + "/profile/" + request.recipient.username;
 
+  try {
+    await sendConnectionAcceptedEmail(senderEmail, senderName, recipientName, profileUrl);
+  } catch (error) {
+    console.error("Error in sendConnectionAcceptedEmail:", error);
+  }
 });
 
 export const rejectConnectionRequest =asyncHandler(async (req, res) => {
