@@ -95,6 +95,7 @@ export const getPostById=asyncHandler(async (req, res) => {
 
 export const createComment=asyncHandler(async (req, res) => {
   const postId=req.params.id;
+  console.log(req.body)
   const {content}=req.body;
 
   const post=await Post.findByIdAndUpdate(postId,{
@@ -105,9 +106,9 @@ export const createComment=asyncHandler(async (req, res) => {
     throw new ApiError(404,"Post not found");
   }
 
-  if(post.author.toString()!==req.user._id.toString()){
+  if(post.author._id.toString()!==req.user._id.toString()){
     const newNotification=new Notification({
-      recipient:post.author,
+      recipient:post.author._id,
       type:"comment",
       relatedUser:req.user._id,
       relatedPost:postId,

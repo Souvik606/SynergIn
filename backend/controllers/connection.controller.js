@@ -7,7 +7,7 @@ import {ApiResponse} from "../utils/ApiResponse.js";
 import {sendConnectionAcceptedEmail} from "../email/emailHandler.js";
 
 export const sendConnectionRequest = asyncHandler(async (req, res) => {
-    const { userId } = req.params.requestId;
+    const { userId } = req.params.userId;
     const senderId = req.user._id;
 
     if (senderId.toString() === userId) {
@@ -33,7 +33,7 @@ export const sendConnectionRequest = asyncHandler(async (req, res) => {
       recipient: userId,
     });
 
-    const connection=await newRequest.save();
+    const connection=await newRequest.save({validateBeforeSave:false});
 
     return res.status(201).json(
       new ApiResponse(201,connection,"Connection request sent successfully")
@@ -158,10 +158,12 @@ export const getConnectionStatus = asyncHandler(async (req, res) => {
     const targetUserId = req.params.userId;
     const currentUserId = req.user._id;
 
+    console.log(targetUserId,currentUserId);
+
     const currentUser = req.user;
     if (currentUser.connections.includes(targetUserId)) {
       return res.status(200).json(
-        new ApiResponse(200, "","Connection accepted")
+        new ApiResponse(200, "connected","Connection accepted")
       )
     }
 
@@ -176,16 +178,16 @@ export const getConnectionStatus = asyncHandler(async (req, res) => {
     if (pendingRequest) {
       if (pendingRequest.sender.toString() === currentUserId.toString()) {
         return res.status(200).json(
-          new ApiResponse(200, "","Connection request pending")
+          new ApiResponse(200, "pending","Connection request pending")
         )
       } else {
         return res.status(200).json(
-          new ApiResponse(200, pendingRequest._id,"Connection request received")
+          new ApiResponse(200, "received","Connection request received")
         )
       }
     }
 
     return res.status(200).json(
-      new ApiResponse(200, "","Not connected")
+      new ApiResponse(200, "not_connected","Not connected")
     )
 });

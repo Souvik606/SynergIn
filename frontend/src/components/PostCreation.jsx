@@ -96,7 +96,7 @@ const PostCreation = ({user}) => {
         </div>
 
         <button
-          className='btn btn-primary text-lg font-semibold rounded-full text-white px-6 py-2'
+          className='btn btn-primary text-lg font-semibold rounded-full text-white px-8 py-2'
           onClick={handlePostCreation}
           disabled={isPending}
         >

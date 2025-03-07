@@ -33,8 +33,8 @@ const Post=({post})=>{
   });
 
   const {mutate:createComment,isPending:isAddingComment} = useMutation({
-    mutationFn: async () => {
-      await axiosInstance.post(`/posts/${post._id}/comment`, {content: newComment})
+    mutationFn: async (content) => {
+      await axiosInstance.post(`/posts/${post._id}/comment`, content)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
@@ -68,7 +68,8 @@ const Post=({post})=>{
   const handleAddComment = async (e) => {
     e.preventDefault();
     if (newComment.trim()) {
-      createComment(newComment);
+      console.log("New comment", newComment);
+      createComment({content:newComment});
       setNewComment("");
       setComments([
         ...comments,
@@ -114,7 +115,7 @@ const Post=({post})=>{
             </button>
           )}
         </div>
-        <p className='mb-4'>{post?.content}</p>
+        <p className='mb-4 text-lg'>{post?.content}</p>
         {post.image && <img src={post?.image} alt='Post content' className='rounded-lg w-full mb-4' />}
 
         <div className='flex justify-between text-info'>

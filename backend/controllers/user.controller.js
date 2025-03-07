@@ -14,6 +14,8 @@ export const getSuggestedConnections=asyncHandler(async (req, res) => {
     }).select("name username profilePicture headline")
     .limit(3);
 
+  console.log(suggestedUsers);
+
   return res.status(200).json(
     new ApiResponse(200, suggestedUsers,"Suggested users list")
   );
