@@ -8,6 +8,7 @@ import toast, {Toaster} from "react-hot-toast";
 import {useQuery} from "@tanstack/react-query";
 import {axiosInstance} from "./lib/axios.js";
 import NotificationsPage from "./pages/NotificationsPage.jsx";
+import NetworkPage from "./pages/NetworkPage.jsx";
 
 function App() {
   const {data:authUser,isLoading}=useQuery({
