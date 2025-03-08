@@ -8,6 +8,7 @@ import { formatDistanceToNow } from "date-fns";
 import PostAction from "./PostAction.jsx";
 
 const Post=({post})=>{
+  const {postId}=useParams()
   const {data:authUser}=useQuery({queryKey:["authUser"]});
 
   const [showComments, setShowComments] = useState(false);
