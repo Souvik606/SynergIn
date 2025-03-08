@@ -54,9 +54,7 @@ const RecommendedUser = ({ user }) => {
         </button>
       );
     }
-
-    console.log(connectionStatus.data.data)
-    switch (connectionStatus?.data?.data) {
+    switch (connectionStatus?.data?.message) {
       case "pending":
         return (
           <button
@@ -71,13 +69,13 @@ const RecommendedUser = ({ user }) => {
         return (
           <div className='flex gap-2 justify-center'>
             <button
-              onClick={() => acceptRequest(connectionStatus.data.requestId)}
+              onClick={() => acceptRequest(connectionStatus.data.data._id)}
               className={`rounded-full p-1 flex items-center justify-center bg-green-500 hover:bg-green-600 text-white`}
             >
               <Check size={16} />
             </button>
             <button
-              onClick={() => rejectRequest(connectionStatus.data.requestId)}
+              onClick={() => rejectRequest(connectionStatus.data.data._id)}
               className={`rounded-full p-1 flex items-center justify-center bg-red-500 hover:bg-red-600 text-white`}
             >
               <X size={16} />

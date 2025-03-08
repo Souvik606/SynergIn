@@ -4,7 +4,8 @@ import {ApiResponse} from "../utils/ApiResponse.js";
 import {uploadOnCloudinary} from "../lib/cloudinary.js";
 
 export const getSuggestedConnections=asyncHandler(async (req, res) => {
-  const connections=await User.findById(req?.user._id).select("connections")
+  const user = await User.findById(req?.user._id).select("connections");
+  const connections = user?.connections || [];
 
   const suggestedUsers=await User.find({
       _id: {
@@ -12,13 +13,11 @@ export const getSuggestedConnections=asyncHandler(async (req, res) => {
         $nin: connections
       }
     }).select("name username profilePicture headline")
-    .limit(3);
-
-  console.log(suggestedUsers);
+    .limit(3)
 
   return res.status(200).json(
     new ApiResponse(200, suggestedUsers,"Suggested users list")
-  );
+  )
 })
 
 export const getProfile=asyncHandler(async (req, res) => {

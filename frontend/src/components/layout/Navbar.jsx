@@ -24,6 +24,7 @@ const Navbar = () => {
     },
   });
 
+
   const unreadNotificationCount = notifications?.data.data.filter((notif) => !notif.read).length;
   const unreadConnectionRequestsCount = connectionRequests?.data?.length;
 
@@ -68,7 +69,7 @@ const Navbar = () => {
                   )}
                 </Link>
                 <Link
-                  to={`/profile/${authUser.username}`}
+                  to={`/profile/${authUser.data.username}`}
                   className='hover:scale-105 hover:transform text-neutral flex flex-col items-center'
                 >
                   <User size={28} />
