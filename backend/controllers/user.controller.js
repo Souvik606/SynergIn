@@ -3,22 +3,26 @@ import {User} from "../models/user.model.js";
 import {ApiResponse} from "../utils/ApiResponse.js";
 import {uploadOnCloudinary} from "../lib/cloudinary.js";
 
-export const getSuggestedConnections=asyncHandler(async (req, res) => {
+export const getSuggestedConnections = asyncHandler(async (req, res) => {
   const user = await User.findById(req?.user._id).select("connections");
   const connections = user?.connections || [];
 
-  const suggestedUsers=await User.find({
-      _id: {
-        $ne: req.user._id,
-        $nin: connections
-      }
-    }).select("name username profilePicture headline")
-    .limit(3)
+  let suggestedUsers = await User.find({
+    _id: {
+      $ne: req.user._id,
+      $nin: connections
+    }
+  })
+    .select("name username profilePicture headline");
+
+  // Randomize the suggested users list
+  suggestedUsers = suggestedUsers.sort(() => Math.random() - 0.5).slice(0, 4);
 
   return res.status(200).json(
-    new ApiResponse(200, suggestedUsers,"Suggested users list")
-  )
-})
+    new ApiResponse(200, suggestedUsers, "Suggested users list")
+  );
+});
+
 
 export const getProfile=asyncHandler(async (req, res) => {
   const user=await User.findOne({
