@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState,Fragment } from "react";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
@@ -10,6 +10,8 @@ import PostAction from "./PostAction.jsx";
 const Post=({post})=>{
   const {postId}=useParams()
   const {data:authUser}=useQuery({queryKey:["authUser"]});
+
+  console.log("content",post.content)
 
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -119,8 +121,16 @@ const Post=({post})=>{
             </button>
           )}
         </div>
-        <p className='mb-4 text-lg'>{post?.content}</p>
-        {post.image && <img src={post?.image} alt='Post content' className='rounded-lg w-full mb-4' />}
+        <p className="mb-4 text-lg">
+          {post?.content.replace(/\r/g, "").split("\n").map((line, index) => (
+            <Fragment key={index}>
+              {line}
+              <br/>
+            </Fragment>
+          ))}
+        </p>
+
+        {post.image && <img src={post?.image} alt='Post content' className='rounded-lg w-full mb-4'/>}
 
         <div className='flex justify-between text-info'>
           <PostAction

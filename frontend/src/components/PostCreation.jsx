@@ -30,6 +30,7 @@ const PostCreation = ({user}) => {
 
   const handlePostCreation = async () => {
     try{
+      console.log("content",content);
       const postData=new FormData();
       postData.append("content", content);
       if(image){

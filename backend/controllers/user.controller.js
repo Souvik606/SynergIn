@@ -23,7 +23,6 @@ export const getSuggestedConnections = asyncHandler(async (req, res) => {
   );
 });
 
-
 export const getProfile=asyncHandler(async (req, res) => {
   const user=await User.findOne({
     username:req.params.username}).select("-password")
