@@ -6,15 +6,37 @@ import notificationRoutes from "./routes/notification.route.js";
 import connectionRoutes from "./routes/connection.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import path from "path";
+import dotenv from "dotenv";
+import { fileURLToPath } from 'url';
+
+
+dotenv.config({
+  path:'./.env'
+})
 
 const app = express();
 
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true,
-  methods: ["GET", "POST", "PATCH", "DELETE"]
-})
-);
+if(process.env.NODE_ENV !== "production") {
+  app.use(cors({
+      origin: "http://localhost:5173",
+      credentials: true,
+      methods: ["GET", "POST", "PATCH", "DELETE"]
+    })
+  );
+}
+
+const __dirname = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+  const frontendPath = path.join(__dirname, "/frontend/dist");
+  console.log("Serving frontend from:", frontendPath);
+
+  app.use(express.static(frontendPath));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+  });
+}
 
 app.use(express.json({limit:'5mb'}));
 app.use(express.urlencoded({ extended: true }));

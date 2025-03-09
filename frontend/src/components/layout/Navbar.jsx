@@ -5,6 +5,7 @@ import { Bell, Home, LogOut, User, Users } from "lucide-react";
 
 const Navbar = () => {
   const {data:authUser}=useQuery({queryKey:["authUser"]});
+  console.log("authUser", authUser)
   const queryClient = useQueryClient();
 
   const {data:notifications} = useQuery({queryKey:["notifications"],
@@ -24,9 +25,8 @@ const Navbar = () => {
     },
   });
 
-
   const unreadNotificationCount = notifications?.data.data.filter((notif) => !notif.read).length;
-  const unreadConnectionRequestsCount = connectionRequests?.data?.length;
+  const unreadConnectionRequestsCount = connectionRequests?.data?.data.length;
 
   return (
     <nav className='bg-secondary shadow-md sticky top-0 z-10'>
