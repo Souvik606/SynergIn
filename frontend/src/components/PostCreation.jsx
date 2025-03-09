@@ -24,7 +24,7 @@ const PostCreation = ({user}) => {
       queryClient.invalidateQueries({queryKey:["posts"]});
     },
     onError:(error)=>{
-      toast.error(error.response.data.message||"Failed to create post.");
+      toast.error(error.response?.data.split("Error:").pop().split("<br>")[0]||"Something went wrong");;
     }
   });
 

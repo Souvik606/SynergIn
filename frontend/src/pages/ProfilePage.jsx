@@ -30,8 +30,8 @@ const ProfilePage = () => {
       toast.success("Profile updated successfully");
       queryClient.invalidateQueries(["userProfile",username])
     },
-    onError:()=>{
-      toast.error("An error occurred");
+    onError:(error)=>{
+      toast.error(error.response?.data.split("Error:").pop().split("<br>")[0]||"Something went wrong");
     }
   })
 

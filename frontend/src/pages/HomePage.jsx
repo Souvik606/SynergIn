@@ -32,6 +32,8 @@ const HomePage = () => {
     }
   })
 
+  console.log(posts)
+
   return <div className='grid grid-cols-1 lg:grid-cols-4 gap-10'>
     <div className='hidden lg:block lg:col-span-1'>
       <Sidebar user={authUser.data}/>

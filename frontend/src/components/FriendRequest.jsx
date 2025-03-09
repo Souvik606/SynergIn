@@ -13,7 +13,7 @@ const FriendRequest = ({ request }) => {
       queryClient.invalidateQueries({ queryKey: ["connectionRequests"] });
     },
     onError: (error) => {
-      toast.error(error.response.data.error);
+      toast.error(error.response?.data.split("Error:").pop().split("<br>")[0]||"Something went wrong");
     },
   });
 
@@ -24,7 +24,7 @@ const FriendRequest = ({ request }) => {
       queryClient.invalidateQueries({ queryKey: ["connectionRequests"] });
     },
     onError: (error) => {
-      toast.error(error.response.data.error);
+      toast.error(error.response?.data.split("Error:").pop().split("<br>")[0]||"Something went wrong");
     },
   });
 

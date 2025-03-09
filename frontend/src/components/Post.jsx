@@ -29,7 +29,7 @@ const Post=({post})=>{
       toast.success("Post deleted successfully");
     },
     onError: (error) => {
-      toast.error(error.message);
+      toast.error(error.response?.data.split("Error:").pop().split("<br>")[0]||"Something went wrong");
     },
   });
 
@@ -42,7 +42,7 @@ const Post=({post})=>{
       toast.success("Post comment added successfully");
     },
     onError: (error) => {
-      toast.error(error.response.data.message||"Failed to add comment");
+      toast.error(error.response?.data.split("Error:").pop().split("<br>")[0]||"Something went wrong");
     }
   })
 
@@ -54,6 +54,9 @@ const Post=({post})=>{
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       queryClient.invalidateQueries({ queryKey: ["post", postId] });
     },
+    onError: (error) => {
+      toast.error(error.response?.data.split("Error:").pop().split("<br>")[0]||"Something went wrong");
+    }
   });
 
   const handleDeletePost = () => {

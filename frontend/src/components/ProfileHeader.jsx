@@ -31,7 +31,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
       queryClient.invalidateQueries(["connectionRequests"]);
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || "An error occurred");
+      toast.error(error.response?.data.split("Error:").pop().split("<br>")[0]||"Something went wrong");
     },
   });
 
@@ -43,7 +43,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
       queryClient.invalidateQueries(["connectionRequests"]);
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || "An error occurred");
+      toast.error(error.response?.data.split("Error:").pop().split("<br>")[0]||"Something went wrong");
     },
   });
 
@@ -55,7 +55,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
       queryClient.invalidateQueries(["connectionRequests"]);
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || "An error occurred");
+      toast.error(error.response?.data.split("Error:").pop().split("<br>")[0]||"Something went wrong");
     },
   });
 
@@ -67,7 +67,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
       queryClient.invalidateQueries(["connectionRequests"]);
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || "An error occurred");
+      toast.error(error.response?.data.split("Error:").pop().split("<br>")[0]||"Something went wrong");
     },
   });
 

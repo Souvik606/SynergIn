@@ -23,7 +23,7 @@ function App() {
           if(error.response && error.response.status === 401){
             return null
           }
-          toast.error(error.response.data.message||"Something went wrong");
+          toast.error(error.response?.data.split("Error:").pop().split("<br>")[0]||"Something went wrong");
         }
       }
     }

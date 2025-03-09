@@ -21,6 +21,9 @@ const NotificationsPage = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(["notifications"]);
     },
+    onError: (error) => {
+      toast.error(error.response?.data.split("Error:").pop().split("<br>")[0]||"Something went wrong");
+    }
   });
 
   const { mutate: deleteNotificationMutation } = useMutation({
@@ -29,6 +32,9 @@ const NotificationsPage = () => {
       queryClient.invalidateQueries(["notifications"]);
       toast.success("Notification deleted");
     },
+    onError: (error) => {
+      toast.error(error.response?.data.split("Error:").pop().split("<br>")[0]||"Something went wrong");
+    }
   });
 
   const renderNotificationIcon = (type) => {

@@ -2,6 +2,7 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {axiosInstance} from "../../lib/axios.js";
 import { Link } from "react-router-dom";
 import { Bell, Home, LogOut, User, Users } from "lucide-react";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const {data:authUser}=useQuery({queryKey:["authUser"]});
@@ -23,6 +24,9 @@ const Navbar = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
+    onError:(error)=>{
+      toast.error(error.response?.data.split("Error:").pop().split("<br>")[0]||"Something went wrong")
+    }
   });
 
   const unreadNotificationCount = notifications?.data.data.filter((notif) => !notif.read).length;
