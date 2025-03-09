@@ -142,7 +142,7 @@ export const getUserConnections = asyncHandler(async (req, res) => {
 
 export const removeConnection = asyncHandler(async (req, res) => {
     const myId = req.user._id;
-    const { userId } = req.params.userId;
+    const userId= req.params.userId;
 
     const updatedConnections=await User.findByIdAndUpdate(myId, { $pull: { connections: userId } },{new:true});
     await User.findByIdAndUpdate(userId, { $pull: { connections: myId } },{new:true});

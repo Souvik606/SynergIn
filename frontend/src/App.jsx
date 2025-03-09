@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Layout from "./components/layout/Layout.jsx";
 import {Navigate, Route, Routes} from "react-router-dom";
 import HomePage from "./pages/HomePage.jsx";
@@ -10,6 +9,7 @@ import {axiosInstance} from "./lib/axios.js";
 import NotificationsPage from "./pages/NotificationsPage.jsx";
 import NetworkPage from "./pages/NetworkPage.jsx";
 import PostPage from "./pages/PostPage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 
 function App() {
   const {data:authUser,isLoading}=useQuery({
@@ -41,6 +41,7 @@ function App() {
       <Route path="/notifications" element={authUser?<NotificationsPage/>:<Navigate to={"/login"}/>}/>
       <Route path="/network" element={authUser?<NetworkPage/>:<Navigate to={"/login"}/>}/>
       <Route path="/post/:postId" element={authUser?<PostPage/>:<Navigate to={"/login"}/>}/>
+      <Route path="/profile/:username" element={authUser?<ProfilePage/>:<Navigate to={"/login"}/>}/>
     </Routes>
     <Toaster/>
   </Layout>

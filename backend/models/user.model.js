@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
     startDate:Date,
     endDate:Date,
     description:String,
+    currentlyWorking:Boolean,
   }],
   education:[{
     school:String,

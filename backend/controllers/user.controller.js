@@ -34,6 +34,7 @@ export const getProfile=asyncHandler(async (req, res) => {
 })
 
 export const updateProfile=asyncHandler(async (req, res) => {
+  console.log(req.body)
   const allowedFields = [
     "name",
     "username",
@@ -41,7 +42,7 @@ export const updateProfile=asyncHandler(async (req, res) => {
     "about",
     "location",
     "skills",
-    "experience",
+    "experiences",
     "education",
   ];
 
@@ -53,24 +54,29 @@ export const updateProfile=asyncHandler(async (req, res) => {
     }
   }
 
-  console.log(req.files)
-  const profilePictureLocalPath=req.files?.profilePicture[0]?.path;
+  if(req.files && req.files.profilePicture){
+    const profilePictureLocalPath=req.files?.profilePicture[0]?.path;
 
-  if(profilePictureLocalPath){
-    const profilePicture=await uploadOnCloudinary(profilePictureLocalPath);
-    updatedData["profilePicture"]=profilePicture.secure_url;
+    if(profilePictureLocalPath){
+      const profilePicture=await uploadOnCloudinary(profilePictureLocalPath);
+      updatedData["profilePicture"]=profilePicture.secure_url;
+    }
   }
 
-  const bannerImgLocalPath=req.files?.bannerImg[0]?.path;
+  if(req.files && req.files.bannerImg){
+    const bannerImgLocalPath=req.files?.bannerImg[0]?.path;
 
-  if(bannerImgLocalPath){
-    const bannerImg=await uploadOnCloudinary(bannerImgLocalPath);
-    updatedData["bannerImg"]=bannerImg.secure_url;
+    if(bannerImgLocalPath){
+      const bannerImg=await uploadOnCloudinary(bannerImgLocalPath);
+      updatedData["bannerImg"]=bannerImg.secure_url;
+    }
   }
 
   const user = await User.findByIdAndUpdate(req.user._id, { $set: updatedData }, { new: true }).select(
     "-password"
   );
+
+  console.log("user",user)
 
   if(!user){
     throw new ApiResponse(500, "Can't update user")

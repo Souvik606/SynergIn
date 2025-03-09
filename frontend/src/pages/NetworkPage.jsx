@@ -32,7 +32,7 @@ const NetworkPage = () => {
             <div className='mb-8'>
               <h2 className='text-xl font-semibold mb-2'>Connection Request</h2>
               <div className='space-y-4'>
-                {connectionRequests.data.map((request) => (
+                {connectionRequests.data.data.map((request) => (
                   <FriendRequest key={request.id} request={request} />
                 ))}
               </div>

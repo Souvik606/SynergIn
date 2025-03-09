@@ -7,7 +7,7 @@ const FriendRequest = ({ request }) => {
   const queryClient = useQueryClient();
 
   const { mutate: acceptConnectionRequest } = useMutation({
-    mutationFn: (requestId) => axiosInstance.put(`/connections/accept/${requestId}`),
+    mutationFn: (requestId) => axiosInstance.patch(`/connections/accept/${requestId}`),
     onSuccess: () => {
       toast.success("Connection request accepted");
       queryClient.invalidateQueries({ queryKey: ["connectionRequests"] });
